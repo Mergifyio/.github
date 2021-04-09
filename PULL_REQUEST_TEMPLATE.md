@@ -4,7 +4,7 @@
 
 ## Related issues
 
-> Fix #1
+> Fix #xyz
 
 ## Checklists
 
