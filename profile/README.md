@@ -3,7 +3,7 @@
 
 Hi! 👋
 
-We are [Mergify](https://mergify.io), a SaaS company providing merge automation for software engineering team.
+We are [Mergify](https://mergify.io), a SaaS company providing merge automation for software engineering teams.
 If you are interested in merging automatically your code and using merge queues, [check us out](https://dashboard.mergify.io).
 
 
