@@ -1,12 +1,8 @@
-## Description of the change
+Comprehensible description of the fixed issue or the implemented feature.
 
-> Description here
+Fixes #xyz
 
-## Related issues
-
-> Fix #xyz
-
-## Checklists
+## Checklists (Just for information, delete me before creating the pull requests)
 
 ### Development
 
