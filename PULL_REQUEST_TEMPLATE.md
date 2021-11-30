@@ -2,6 +2,7 @@ Comprehensible description of the fixed issue or the implemented feature.
 
 Fixes #xyz
 
+<!--
 ## Checklists (Just for information, delete me before creating the pull requests)
 
 ### Development
@@ -19,3 +20,5 @@ Code review policies are handled and automated by Mergify.
 * When change is approved by at least one review and no pending review are
   remaining, pull request is retested against its base branch.
 * The pull request is then merged automatically.
+*
+-->
