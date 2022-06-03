@@ -15,5 +15,6 @@ Fixes #xyz
 - [ ]  User facing bug must have changed in releasenotes/nodes/
 - [ ]  Pull request must have been reviewed by at least one core reviewer
 - [ ]  No pending `requested changes`
+- [ ]  No `unresolved threads`
 
 -->
