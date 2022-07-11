@@ -19,4 +19,4 @@ We also regularly publish exciting articles about our technology on [our blog](h
 
 ## 🍿 Fun facts
 
-We merge over 30k pull requests every month for our users without them having to lift their finger!
+We merge over 40k pull requests every month for our users without them having to lift their finger!
