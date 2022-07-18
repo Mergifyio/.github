@@ -16,5 +16,6 @@ Fixes #xyz
 - [ ]  Pull request must have been reviewed by at least one core reviewer
 - [ ]  No pending `requested changes`
 - [ ]  No `unresolved threads`
+- [ ]  Change that requires manual deployment steps or deployment monitoring requires `manual merge` label until the author is ready to do the deployment.
 
 -->
