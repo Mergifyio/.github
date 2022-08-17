@@ -18,3 +18,7 @@ We also regularly publish exciting articles about our technology on [our blog](h
 ## 🍿 Fun facts
 
 We merge over 50,000 pull requests every month for our users without them having to lift their finger! 🦾
+
+## 👩‍💻 Careers
+
+We are always looking for new talent to join us. Look up our [carrers page](https://careers.mergify.com)!
