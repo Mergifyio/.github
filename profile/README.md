@@ -21,4 +21,4 @@ We merge over 50,000 pull requests every month for our users without them having
 
 ## 👩‍💻 Careers
 
-We are always looking for new talent to join us. Look up our [carrers page](https://careers.mergify.com)!
+We are always looking for new talent to join us. Look up our [careers page](https://careers.mergify.com)!
