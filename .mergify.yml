@@ -1,0 +1,61 @@
+defaults:
+  actions:
+    queue:
+      name: default
+      method: squash
+      rebase_fallback: null
+      commit_message_template: |
+        {{ title }} (#{{ number }})
+
+        {{ body }}
+    squash:
+      commit_message: first-commit
+      bot_account: mergify-ci-bot
+
+pull_request_rules:
+  - name: dismiss reviews
+    conditions: []
+    actions:
+      dismiss_reviews: {}
+
+  - name: warn on conflicts
+    conditions:
+      - conflict
+      - -closed
+    actions:
+      comment:
+        message: "@{{author}} this pull request is now in conflict 😩"
+      label:
+        toggle:
+          - conflict
+
+  - name: label on unresolved
+    conditions:
+      - "#review-threads-unresolved>0"
+    actions:
+      label:
+        toggle:
+          - review threads unresolved
+
+  - name: warn on CI failure for hotfix
+    conditions:
+      - label=hotfix
+      - "#check-failure>0"
+    actions:
+      comment:
+        message: Your hotfix is failing CI @{{author}} 🥺
+
+  - name: changelog requirements
+    conditions:
+      - or:
+          - "-title~=^feat"
+          - label=skip changelog
+          - label=need changelog
+    actions:
+      post_check:
+        title: |
+          {% if check_succeed %}
+          Changelog requirements are present.
+          {% else %}
+          Changelog requirements are missing.
+          {% endif %}
