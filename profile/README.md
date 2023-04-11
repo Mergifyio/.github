@@ -15,7 +15,7 @@ If you're curious about how to setup Mergify and how it works, you can read our 
 
 We also regularly publish exciting articles about our technology on [our blog](https://blog.mergify.com).
 
-You can also join our amazing [slack community](https://mergifycommunity.slack.com/).
+Feel free to join our amazing [Slack community](https://slack.mergify.com/).
 
 ## 🍿 Fun facts
 
