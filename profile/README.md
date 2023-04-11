@@ -15,6 +15,8 @@ If you're curious about how to setup Mergify and how it works, you can read our 
 
 We also regularly publish exciting articles about our technology on [our blog](https://blog.mergify.com).
 
+Feel free to join our amazing [Slack community](https://slack.mergify.com/).
+
 ## 🍿 Fun facts
 
 We merge over 50,000 pull requests every month for our users without them having to lift their finger! 🦾
