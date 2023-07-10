@@ -2,7 +2,6 @@ defaults:
   actions:
     queue:
       allow_merging_configuration_change: true
-      method: squash
       commit_message_template: |
         {{ title }} (#{{ number }})
 
