@@ -2,10 +2,6 @@ defaults:
   actions:
     queue:
       allow_merging_configuration_change: true
-      commit_message_template: |
-        {{ title }} (#{{ number }})
-
-        {{ body }}
     squash:
       commit_message: first-commit
       bot_account: mergify-ci-bot
