@@ -4,7 +4,6 @@ defaults:
       allow_merging_configuration_change: true
     squash:
       commit_message: first-commit
-      bot_account: mergify-ci-bot
 
 pull_request_rules:
   - name: dismiss reviews
