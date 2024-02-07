@@ -41,12 +41,13 @@ pull_request_rules:
 
   - name: changelog requirements
     conditions:
-      - or:
-          - "-title~=^feat"
-          - label=skip changelog
-          - label=need changelog
+      - "title~=^feat"
     actions:
       post_check:
+        success_conditions:
+          - or:
+            - label=skip changelog
+            - label=need changelog
         title: |
           {% if check_succeed %}
           Changelog requirements are present.
