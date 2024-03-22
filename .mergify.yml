@@ -81,3 +81,25 @@ pull_request_rules:
           The pull request title must follow
           [Conventional Commit](https://www.conventionalcommits.org/en/v1.0.0/).
           {% endif %}
+
+  - name: Clifus labels
+    conditions:
+      - base=main
+      - author=mergify-ci-bot
+      - head~=^clifus/
+      - "title~=^chore: bump"
+    actions:
+      label:
+        add:
+          - dependencies
+
+  - name: Trivy label
+    conditions:
+      - base=main
+      - author=mergify-ci-bot
+      - head=trivy/daily-report
+      - "body~=New CVEs:"
+    actions:
+      label:
+        add:
+          - new CVE
