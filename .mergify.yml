@@ -100,6 +100,6 @@ pull_request_rules:
       - head=trivy/daily-report
       - "body~=New CVEs:"
     actions:
-      labels:
+      label:
         add:
           - new CVE
