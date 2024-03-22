@@ -89,7 +89,7 @@ pull_request_rules:
       - head~=^clifus/
       - "title~=^chore: bump"
     actions:
-      labels:
+      label:
         add:
           - dependencies
 
