@@ -4,45 +4,40 @@ defaults:
       allow_merging_configuration_change: true
     squash:
       commit_message: first-commit
-
 pull_request_rules:
   - name: dismiss reviews
     conditions: []
     actions:
       dismiss_reviews: {}
-
   - name: warn on conflicts
     conditions:
       - conflict
-      - -closed
+      - '-closed'
     actions:
       comment:
-        message: "@{{author}} this pull request is now in conflict 😩"
+        message: '@{{author}} this pull request is now in conflict 😩'
       label:
         toggle:
           - conflict
-
   - name: label on unresolved
     conditions:
-      - "#review-threads-unresolved>0"
+      - '#review-threads-unresolved>0'
     actions:
       label:
         toggle:
           - review threads unresolved
-
   - name: warn on CI failure for hotfix
     conditions:
-      - -closed
+      - '-closed'
       - label=hotfix
-      - "#check-failure>0"
+      - '#check-failure>0'
     actions:
       comment:
         message: Your hotfix is failing CI @{{author}} 🥺
-
   - name: changelog requirements
     conditions:
       - or:
-          - "-title~=^feat"
+          - '-title~=^feat'
           - label=skip changelog
           - label=need changelog
     actions:
@@ -53,23 +48,22 @@ pull_request_rules:
           {% else %}
           Changelog requirements are missing.
           {% endif %}
-
-
   - name: label on queued
     conditions:
       - queue-position>=0
     actions:
       label:
         toggle:
-          - 'queued'
-
+          - queued
   - name: Conventional Commit
     conditions:
       - base=main
     actions:
       post_check:
         success_conditions:
-          - "title ~= ^(fix|feat|docs|style|refactor|perf|test|build|ci|chore|revert)(?:\\(.+\\))?:"
+          - >-
+            title ~=
+            ^(fix|feat|docs|style|refactor|perf|test|build|ci|chore|revert)(?:\(.+\))?:
         title: |
           {% if check_succeed %}
           Title follows Conventional Commit
@@ -81,25 +75,31 @@ pull_request_rules:
           The pull request title must follow
           [Conventional Commit](https://www.conventionalcommits.org/en/v1.0.0/).
           {% endif %}
-
   - name: Clifus labels
     conditions:
       - base=main
       - author=mergify-ci-bot
       - head~=^clifus/
-      - "title~=^chore: bump"
+      - 'title~=^chore: bump'
     actions:
       label:
         add:
           - dependencies
-
   - name: Trivy label
     conditions:
       - base=main
       - author=mergify-ci-bot
       - head=trivy/daily-report
-      - "body~=New CVEs:"
+      - 'body~=New CVEs:'
     actions:
       label:
         add:
           - new CVE
+merge_protections:
+  - name: changelog requirements
+    if: []
+    success_conditions:
+      - or:
+          - '-title ~= ^feat'
+          - label = skip changelog
+          - label = need changelog
