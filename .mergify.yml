@@ -34,20 +34,7 @@ pull_request_rules:
     actions:
       comment:
         message: Your hotfix is failing CI @{{author}} 🥺
-  - name: changelog requirements
-    conditions:
-      - or:
-          - '-title~=^feat'
-          - label=skip changelog
-          - label=need changelog
-    actions:
-      post_check:
-        title: |
-          {% if check_succeed %}
-          Changelog requirements are present.
-          {% else %}
-          Changelog requirements are missing.
-          {% endif %}
+
   - name: label on queued
     conditions:
       - queue-position>=0
@@ -55,26 +42,7 @@ pull_request_rules:
       label:
         toggle:
           - queued
-  - name: Conventional Commit
-    conditions:
-      - base=main
-    actions:
-      post_check:
-        success_conditions:
-          - >-
-            title ~=
-            ^(fix|feat|docs|style|refactor|perf|test|build|ci|chore|revert)(?:\(.+\))?:
-        title: |
-          {% if check_succeed %}
-          Title follows Conventional Commit
-          {% else %}
-          Title does not follow Conventional Commit
-          {% endif %}
-        summary: |
-          {% if not check_succeed %}
-          The pull request title must follow
-          [Conventional Commit](https://www.conventionalcommits.org/en/v1.0.0/).
-          {% endif %}
+
   - name: Clifus labels
     conditions:
       - base=main
