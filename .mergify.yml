@@ -1,7 +1,5 @@
 defaults:
   actions:
-    queue:
-      allow_merging_configuration_change: true
     squash:
       commit_message: first-commit
 pull_request_rules:
