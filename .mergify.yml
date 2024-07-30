@@ -65,6 +65,7 @@ merge_protections:
   - name: Changelog requirements
     if: []
     success_conditions:
+      - repository-name != mergify-shadow-office
       - or:
           - '-title ~= ^feat'
           - label = skip changelog
