@@ -32,7 +32,6 @@ pull_request_rules:
     actions:
       comment:
         message: Your hotfix is failing CI @{{author}} 🥺
-
   - name: label on queued
     conditions:
       - queue-position>=0
@@ -40,7 +39,6 @@ pull_request_rules:
       label:
         toggle:
           - queued
-
   - name: Clifus labels
     conditions:
       - base=main
@@ -63,9 +61,9 @@ pull_request_rules:
           - new CVE
 merge_protections:
   - name: Changelog requirements
-    if: []
-    success_conditions:
+    if:
       - repository-name != mergify-shadow-office
+    success_conditions:
       - or:
           - '-title ~= ^feat'
           - label = skip changelog
