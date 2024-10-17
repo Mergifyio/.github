@@ -24,14 +24,6 @@ pull_request_rules:
       label:
         toggle:
           - review threads unresolved
-  - name: warn on CI failure for hotfix
-    conditions:
-      - '-closed'
-      - label=hotfix
-      - '#check-failure>0'
-    actions:
-      comment:
-        message: Your hotfix is failing CI @{{author}} 🥺
   - name: label on queued
     conditions:
       - queue-position>=0
