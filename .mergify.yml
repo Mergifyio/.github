@@ -63,7 +63,7 @@ merge_protections:
   - name: Enforce conventional commit
     description: Make sure that we follow https://www.conventionalcommits.org/en/v1.0.0/
     if:
-      - base = main
+      - "-draft"
     success_conditions:
       - >-
         title ~=
