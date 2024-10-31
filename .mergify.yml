@@ -62,8 +62,7 @@ merge_protections:
           - label = need changelog
   - name: Enforce conventional commit
     description: Make sure that we follow https://www.conventionalcommits.org/en/v1.0.0/
-    if:
-      - "-draft"
+    if: []
     success_conditions:
       - >-
         title ~=
