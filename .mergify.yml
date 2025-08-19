@@ -51,7 +51,14 @@ pull_request_rules:
       label:
         add:
           - new CVE
+
 merge_protections:
+  - name: No Manual Merge
+    if:
+      - label = manual merge
+    success_conditions:
+      - label != manual merge
+
   - name: Changelog requirements
     if:
       - repository-name != mergify-shadow-office
