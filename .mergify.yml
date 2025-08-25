@@ -61,7 +61,7 @@ merge_protections:
 
   - name: Changelog requirements
     if:
-      - repository-name != mergify-shadow-office
+      - repository-name != shadow-office
     success_conditions:
       - or:
           - '-title ~= ^feat'
