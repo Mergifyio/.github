@@ -24,13 +24,6 @@ pull_request_rules:
       label:
         toggle:
           - review threads unresolved
-  - name: label on queued
-    conditions:
-      - queue-position>=0
-    actions:
-      label:
-        toggle:
-          - queued
   - name: Clifus labels
     conditions:
       - base=main
