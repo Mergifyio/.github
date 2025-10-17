@@ -81,4 +81,5 @@ merge_protections:
   - name: 📕 PR description
     if: []
     success_conditions:
-      - "body ~= [a-zA-Z0-9 -_]{32,}"  # must have 32+ real characters
+      # must have 48+ real characters on possibly multi-lines
+      - 'body ~= [a-zA-Z0-9\s_-]{48,}'
