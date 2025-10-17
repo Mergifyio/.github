@@ -62,6 +62,7 @@ merge_protections:
           - '-title ~= ^feat'
           - label = skip changelog
           - label = need changelog
+
   - name: Enforce conventional commit
     description: Make sure that we follow https://www.conventionalcommits.org/en/v1.0.0/
     if: []
@@ -69,9 +70,15 @@ merge_protections:
       - >-
         title ~=
         ^(fix|feat|docs|style|refactor|perf|test|build|ci|chore|revert)(?:\(.+\))?:
+
   - name: 🔎 Reviews
     if: []
     success_conditions:
       - "#changes-requested-reviews-by = 0"
       - "#review-threads-unresolved = 0"
       - "#review-requested = 0"
+
+  - name: 📕 PR description
+    if: []
+    success_conditions:
+      - "body ~= [a-zA-Z0-9 -_]{32,}"  # must have 32+ real characters
