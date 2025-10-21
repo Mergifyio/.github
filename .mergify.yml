@@ -52,17 +52,6 @@ merge_protections:
     success_conditions:
       - label != manual merge
 
-  - name: Changelog requirements
-    if:
-      - repository-name != shadow-office
-      # We generate the changelog from commits directly
-      - repository-name != mergify-cli
-    success_conditions:
-      - or:
-          - '-title ~= ^feat'
-          - label = skip changelog
-          - label = need changelog
-
   - name: Enforce conventional commit
     description: Make sure that we follow https://www.conventionalcommits.org/en/v1.0.0/
     if: []
