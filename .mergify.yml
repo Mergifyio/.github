@@ -25,26 +25,6 @@ pull_request_rules:
       label:
         toggle:
           - review threads unresolved
-  - name: Clifus labels
-    conditions:
-      - base=main
-      - author=mergify-ci-bot
-      - head~=^clifus/
-      - 'title~=^chore: bump'
-    actions:
-      label:
-        add:
-          - dependencies
-  - name: Trivy label
-    conditions:
-      - base=main
-      - author=mergify-ci-bot
-      - head=trivy/daily-report
-      - 'body~=New CVEs:'
-    actions:
-      label:
-        add:
-          - new CVE
 
 merge_protections:
   - name: No Manual Merge
