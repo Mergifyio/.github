@@ -5,143 +5,145 @@
   </picture>
 </p>
 
+<h3 align="center">Keep every merge green.</h3>
+
 <p align="center">
-  <b>Mergify keeps your main branch green.</b><br>
-  A GitHub app that queues your approved pull requests, tests each one against the code it will
-  actually merge into, and batches them so your CI runs a fraction of the jobs it runs today.
+  Mergify covers the path from pull request to green main branch: a merge queue that tests each
+  change against the code it will merge into, CI Insights for slow and failing jobs, and Test Engine
+  for flaky tests.
 </p>
 
 <p align="center">
-  <a href="https://github.com/apps/mergify"><kbd> <br> Install the GitHub App <br> </kbd></a>
-  <a href="https://docs.mergify.com"><kbd> <br> Read the docs <br> </kbd></a>
+  <a href="https://dashboard.mergify.com"><kbd> <br> Get started <br> </kbd></a>
+  <a href="https://docs.mergify.com"><kbd> <br> Documentation <br> </kbd></a>
+  <a href="https://mergify.com/contact"><kbd> <br> Talk to our team <br> </kbd></a>
 </p>
 
 <p align="center">
-  <a href="https://mergify.com">mergify.com</a> ·
-  <a href="https://dashboard.mergify.com">Dashboard</a> ·
-  <a href="https://mergify.com/blog">Blog</a> ·
+  <a href="https://mergify.com">Website</a> ·
+  <a href="https://mergify.com/pricing">Pricing</a> ·
+  <a href="https://mergify.com/customers">Customers</a> ·
   <a href="https://changelog.mergify.com">Changelog</a> ·
-  <a href="https://slack.mergify.com">Slack community</a>
+  <a href="https://mergify.com/blog">Blog</a> ·
+  <a href="https://status.mergify.com">Status</a>
 </p>
 
 ---
 
-## The problem it solves
+## Products
 
-Your pull request was green when it merged, and main is red now.
+Every plan includes all three.
 
-That happens because CI tested the pull request against a version of main that no longer existed by
-the time it landed. Two changes, each correct on its own, touch the same assumption, and nothing
-catches it until they meet.
+### [Merge Queue](https://mergify.com/product/merge-queue)
 
-It gets worse with team size, and faster than headcount does: what matters is how many pairs of
-changes are in flight at once, and that grows quadratically. Three engineers can absorb it. Forty
-cannot, and somewhere between the two a merge queue stops being optional. We publish what our own
-queue data says about where that line falls, in
-[State of Merge Queues](https://mergify.com/reports/state-of-merge-queues-2026).
+Mergify tests each pull request on top of the latest main and the pull requests queued ahead of it,
+and merges it only when CI passes on that combined state. Two changes that each pass CI on their own
+can no longer break main together.
 
-## Try it on one pull request
+- **Batching with bisection.** One CI run validates several pull requests. When a batch fails,
+  Mergify splits it to find the change responsible.
+- **Two-step CI.** Fast checks decide which pull requests enter the queue, and the full suite runs
+  once, right before the merge.
+- **Scopes.** Independent parts of a monorepo merge in parallel lanes, defined from your build graph
+  or from file patterns.
+- **Merge control.** Scheduled freezes, `Depends-On:` dependencies across repositories,
+  `Merge-After:` scheduled merges, and GitHub stacked pull requests landed in order.
 
-Install the [GitHub app](https://github.com/apps/mergify), then comment on any open pull request:
+Coming from GitHub's merge queue? The
+[comparison](https://mergify.com/compare/github-merge-queue) covers the differences and the
+migration.
 
-```
-@mergifyio queue
-```
+### [CI Insights](https://mergify.com/product/ci-insights)
 
-Mergify rebases it on current main, runs the CI you already have against that state, and merges when
-it goes green. No config file needed to get that far.
+CI Insights tracks every CI job and runner, shows which ones are slow, failing or flaky, and
+automatically retries jobs that failed for a transient reason.
 
-The config file is where you spend less on CI:
+### [Test Engine](https://mergify.com/product/test-engine)
+
+Test Engine runs inside the test framework you already use, including pytest, Jest, RSpec, Vitest,
+Playwright and JUnit. It reruns the tests a pull request adds or changes to catch flaky ones before
+they merge, and quarantines known-flaky tests so their failures stop blocking merges.
+
+## Deployment
+
+- **Mergify Cloud** is operated by Mergify. Install the GitHub App and the queue is running.
+- **[Mergify Enterprise Server](https://mergify.com/solutions/enterprise-server)** runs the full
+  product on your own infrastructure, with GitHub Enterprise Server or GitHub.com, for teams whose
+  code cannot leave their network.
+
+## Get started
+
+1. Install the [Mergify GitHub App](https://github.com/apps/mergify).
+2. Comment `@mergifyio queue` on an open pull request. Mergify updates it on top of main, runs your
+   existing CI and merges it once CI passes. No configuration file is needed for this step.
+3. Add a `.mergify.yml` to tune the queue. This one batches up to five pull requests per CI run and
+   keeps the expensive suite for the final check:
 
 ```yaml
 queue_rules:
   - name: default
-    # Test up to 5 pull requests in a single CI run. If the batch fails,
-    # Mergify bisects it to find the culprit instead of failing all five.
     batch_size: 5
     batch_max_wait_time: 5 min
-
-    # Two-step CI: cheap checks to get into the queue, the expensive
-    # suite once, right before the merge.
     queue_conditions:
       - check-success = quick-tests
     merge_conditions:
       - check-success = full-suite
-
-priority_rules:
-  - name: hotfix
-    conditions:
-      - label = urgent
-    priority: high
 ```
 
-## If you are comparing us to GitHub's merge queue
+The [documentation](https://docs.mergify.com) covers every option, and `mergify config validate`
+from the [Mergify CLI](https://docs.mergify.com/cli/) checks a configuration before it lands.
 
-Most people who land here are. GitHub's queue is genuinely fine for a small team on one fast
-workflow. Three of the differences are structural, in that they come from how each queue is built
-rather than from a setting either side could turn on. The GitHub column quotes GitHub's own
-[merge queue documentation](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/configuring-pull-request-merges/managing-a-merge-queue),
-read in August 2026.
+## Customers
 
-| | GitHub merge queue | Mergify |
-| --- | --- | --- |
-| **How many pull requests share a CI run** | One build per queued pull request. The docs are explicit: "Merge limits do not combine `merge_group` builds." | A batch of pull requests validated by one CI run. If the batch fails, Mergify bisects it to find the one bad change instead of failing all of them. |
-| **When your checks run** | "Merge queue and pull requests checks are coupled." One set of checks, at one point. | Two gates: cheap checks to enter the queue, the expensive suite once, right before the merge. |
-| **What the queue orders** | One first-in, first-out line per protected branch. | Scopes. Independent parts of a monorepo advance in parallel instead of queuing behind each other. |
+More than 2,000 organizations and 25,000 users work with Mergify every day, across 300,000
+repositories. Engineering teams at [Mozilla](https://mergify.com/customers/mozilla),
+[Elastic](https://mergify.com/customers/elastic), [Cerebras](https://mergify.com/customers/cerebras),
+[Back Market](https://mergify.com/customers/back-market) and
+[PayFit](https://mergify.com/customers/payfit) describe how they run it in their own words, and the
+rest are on the [customer stories](https://mergify.com/customers) page.
 
-Longer version, plus a migration guide:
-[Mergify vs GitHub merge queue](https://mergify.com/compare/github-merge-queue).
+## Security and compliance
 
-## The rest of it
+Mergify is SOC 2 Type II attested and does not store repository contents: for a git operation such
+as a rebase, it clones the repository into a temporary directory and deletes it when the operation
+finishes. Configuration and metadata are encrypted at rest with AES-256 and in transit with TLS 1.2
+or higher. Authentication and permissions are delegated to GitHub, so a user's role in Mergify is
+their role on the repository.
 
-The queue is what most people arrive for. It shares its data with the rest of the platform, which is
-where the interesting parts are:
+- [Trust Center](https://trust.mergify.com): audit reports and the sub-processor list.
+- [Security documentation](https://docs.mergify.com/security/): data handling and each permission
+  the GitHub App requests.
+- [HackerOne](https://hackerone.com/mergify): vulnerability reports, through the bug bounty program.
+- [security@mergify.com](mailto:security@mergify.com): Data Processing Addendum requests.
 
-- **[CI Insights](https://mergify.com/product/ci-insights)** watches your jobs and runners, finds
-  the ones that are flaky or slow, and auto-retries jobs that failed for a transient reason.
-- **[Test Insights](https://mergify.com/product/test-insights)** classifies every test as healthy,
-  flaky or broken, catches new flakiness on the pull request that introduced it, and quarantines the
-  known-bad ones so they stop blocking merges.
-- **[Merge Protections](https://mergify.com/product/merge-protections)** covers what branch
-  protections cannot: conditions on pull request metadata, dependencies between pull requests, merge
-  windows, and freezes.
-- **[Stacks](https://mergify.com/product/stacks)** splits a branch into one reviewable pull request
-  per commit, managed from the CLI with plain git rebase underneath.
+## Support
 
-## In production
+- [Documentation](https://docs.mergify.com) for setup guides and the configuration reference.
+- [support@mergify.com](mailto:support@mergify.com), or **Help Center › Contact us** in the
+  [dashboard](https://dashboard.mergify.com), for anything that blocks you.
+- [Mergifyio/mergify](https://github.com/Mergifyio/mergify) for public bug reports and feature
+  requests.
+- [Slack community](https://slack.mergify.com) for questions to the team and other users.
+- [status.mergify.com](https://status.mergify.com) for availability and incident history.
 
-Two customers wrote up how they run it, in their own words:
+## Integrations
 
-- **[Cerebras](https://mergify.com/customers/cerebras)** on getting expensive hardware-test runs
-  down to one per merge instead of one per push.
-- **[Apex Fintech](https://mergify.com/customers/apex)** on merging into a multi-language monorepo
-  with speculative branches.
+Mergify publishes its command line and CI integrations from this organization:
 
-## Our public repos
+| Repository | Purpose |
+| --- | --- |
+| [mergify-cli](https://github.com/Mergifyio/mergify-cli) | The `mergify` command: stacked pull requests, merge queue status, test result uploads and configuration validation. Holds the releases and the issue tracker. |
+| [setup-cli](https://github.com/Mergifyio/setup-cli) | GitHub Action that installs a pinned version of the CLI. |
+| [gha-mergify-ci](https://github.com/Mergifyio/gha-mergify-ci) | GitHub Action that uploads JUnit results and detects merge queue scopes. |
+| [mergify-ci-buildkite-plugin](https://github.com/Mergifyio/mergify-ci-buildkite-plugin) | The same for Buildkite. |
+| [mergify-pre-commit](https://github.com/Mergifyio/mergify-pre-commit) | pre-commit hook that validates Mergify configuration files. |
 
-They are all on the [Repositories tab](https://github.com/orgs/Mergifyio/repositories), and two are
-worth pointing at directly: [mergify-cli](https://github.com/Mergifyio/mergify-cli), the `mergify`
-binary for stacked pull requests, queue control and config validation, and
-[docs](https://github.com/Mergifyio/docs), the source of
-[docs.mergify.com](https://docs.mergify.com), where corrections by pull request are welcome.
+## About Mergify
 
-## Before your security team asks
+Mergify has run merge queues in production since 2018. It is built by a small remote team across
+France and the Netherlands.
 
-Mergify is SOC 2 Type II attested. It processes repository contents in memory and does not persist
-them; what we store is your configuration and the metadata around a merge, encrypted at rest.
-Authentication and permissions are delegated entirely to GitHub, so a user's role in Mergify is
-whatever their role is on the repository.
-
-Reports and the sub-processor list are on the [Trust Center](https://trust.mergify.com). The
-permission-by-permission breakdown of what the GitHub App asks for, and why, is in the
-[security docs](https://docs.mergify.com/security/).
-
-## Elsewhere
-
-We are a small, fully remote team in France.
-
+[About](https://mergify.com/about) ·
 [Careers](https://careers.mergify.com) ·
 [LinkedIn](https://www.linkedin.com/company/mergify/) ·
-[X](https://x.com/Mergifyio) ·
-[Status](https://status.mergify.com) ·
-[security@mergify.com](mailto:security@mergify.com)
+[X](https://x.com/Mergifyio)
